@@ -1,27 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Practice Assessment 3</title>
-  <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Practice Assessment 3</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css"
+        integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
 </head>
+
 <body>
     <h1 style="text-align: center;">Widget List:</h1>
     {% if widgets|length == 0 %}
-        <h3 style="text-align: center;">No Widgets Exist</h3>
-        <hr>
+    <h3 style="text-align: center;">No Widgets Exist</h3>
+    <hr>
     {% else %}
-        <ul>
+    <div class="container" style="display: flex; justify-content: center;">
+        <table style="text-align: center;">
+            <tr>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>Delete</th>
+            </tr>
             {% for widget in widgets %}
-                <li>
-                    {{ widget }}
-                    <a href="{% url 'delete_widget' widget.id %}">Delete</a>
-                </li>
+            <tr>
+                <td>{{ widget.description }}</td>
+                <td>{{ widget.quantity}}</td>
+                <td><a style="color: red;" href="{% url 'delete_widget' widget.id %}">X</a></td>
+            </tr>
             {% endfor %}
-        </ul>
-    {% endif %}
-    <a href="{% url 'add_widget' %}">Add Widget</a>
+        </table>
+        {% endif %}
+    </div>
+    <h4 style="text-align: center;">Add Widget<h4>
+        <form style="text-align: center;" action="{% url 'add_widget' %}" method="post">
+            {% csrf_token %}
+            {{ widget_form.as_p }}
+            <input type="submit" class="btn" value="Add Widget">
+        </form>
 </body>
+
 </html>

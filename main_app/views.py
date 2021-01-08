@@ -1,14 +1,20 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from django.views.generic.edit import CreateView
 from .models import Widget
+from .forms import WidgetForm
 # Create your views here.
 def index(request):
     widgets = Widget.objects.all()
-    return render(request, 'index.html', {'widgets': widgets})
+    widget_form = WidgetForm()
+    return render(request, 'index.html', {'widgets': widgets, 'widget_form': widget_form})
 
-class WidgetCreate(CreateView):
-    model = Widget
-    fields = "__all__"
+def add_widget(request):
+    form = WidgetForm(request.POST)
+    if form.is_valid():
+        new_widget = form.save(commit=False)
+        new_widget.save()
+    return redirect('index')
 
 def delete_widget(request, widget_id):
     Widget.objects.get(id=widget_id).delete()
