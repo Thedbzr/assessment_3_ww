@@ -5,3 +5,11 @@ from .models import Widget
 def index(request):
     widgets = Widget.objects.all()
     return render(request, 'index.html', {'widgets': widgets})
+
+class WidgetCreate(CreateView):
+    model = Widget
+    fields = "__all__"
+
+def delete_widget(request, widget_id):
+    Widget.objects.get(id=widget_id).delete()
+    return redirect('/')
